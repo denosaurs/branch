@@ -1,0 +1,8 @@
+{
+    "name": "branch",
+    "description": "Denosaurs pretty logger",
+    "stable": true,
+    "unlisted": false,
+    "repository": "https://github.com/denosaurs/branch"
+}
+
