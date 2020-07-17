@@ -17,37 +17,32 @@ const DEFAULT_HANDLER = "format_fn";
 
 /** Deno logger, but slightly better. */
 export class ConsoleHandler extends BaseHandler {
-  constructor(level: LevelName, private tag: string) {
+  constructor(level: LevelName, private tag?: string) {
     super(level)
   }
   format(record: LogRecord): string {
     let msg = "";
     switch (record.level) {
+      case LogLevels.DEBUG:
+        msg += blue(this.tag ?? "[DEBUG]");
+        break;
       case LogLevels.INFO:
-        msg += blue(this.tag);
+        msg += blue(this.tag ?? "[INFO]");
         break;
       case LogLevels.WARNING:
-        msg += yellow(this.tag);
+        msg += yellow(this.tag ?? "[WARN]");
         break;
       case LogLevels.ERROR:
-        msg += red(this.tag);
+        msg += red(this.tag ?? "[ERR]");
         break;
       case LogLevels.CRITICAL:
-        msg += bold(red(this.tag));
+        msg += bold(red(this.tag ?? "[CRIT]"));
         break;
       default:
         break;
     }
 
     msg += ` ${reset(record.msg)}`;
-
-    for (const arg of record.args) {
-      if (arg instanceof Object) {
-        msg += ` ${JSON.stringify(arg)}`;
-      } else {
-        msg += ` ${String(arg)}`;
-      }
-    }
     return msg;
   }
 
@@ -58,7 +53,7 @@ export class ConsoleHandler extends BaseHandler {
 
 /** Modify default deno logger with configurable
  * log level. */
-export async function setup(level: LevelName, tag: string): Promise<void> {
+export async function setup(level: LevelName, tag?: string): Promise<void> {
   await log.setup({
     handlers: {
       [DEFAULT_HANDLER]: new ConsoleHandler(level, tag),
