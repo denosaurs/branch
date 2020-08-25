@@ -1,5 +1,9 @@
 # branch
 
+[![Tags](https://img.shields.io/github/release/denosaurs/branch)](https://github.com/denosaurs/branch/releases)
+[![CI Status](https://img.shields.io/github/workflow/status/denosaurs/branch/check)](https://github.com/denosaurs/branch/actions)
+[![License](https://img.shields.io/github/license/denosaurs/branch)](https://github.com/denosaurs/branch/blob/master/LICENSE)
+
 ```typescript
 import log from "../mod.ts";
 
