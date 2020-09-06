@@ -1,4 +1,4 @@
-import log from "../mod.ts";
+import * as log from "../mod.ts";
 
 await log.setup({ filter: "INFO" });
 

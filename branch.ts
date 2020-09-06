@@ -14,6 +14,7 @@ import {
   LogLevels,
   BaseHandler,
   LevelName,
+  GenericFunction,
 } from "./deps.ts";
 
 export declare interface LogConfig {
@@ -103,29 +104,26 @@ export async function setup({ filter }: LogOptions): Promise<void> {
   });
 }
 
-type Message<T> = (T extends Function ? never : T) | (() => T);
+type Message<T> = (T extends GenericFunction ? never : T) | (() => T);
 
-function debug<T>(msg: Message<T>, op?: string): T | undefined {
+function debug<T>(msg: Message<T>, op = "main"): T | undefined {
   // Assist TS compiler with pass-through generic type
-  op = op ?? "main";
   if (msg instanceof Function) {
     return log.debug(msg, op);
   }
   return log.debug(msg, op);
 }
 
-function info<T>(msg: Message<T>, op?: string): T | undefined {
+function info<T>(msg: Message<T>, op = "main"): T | undefined {
   // Assist TS compiler with pass-through generic type
-  op = op ?? "main";
   if (msg instanceof Function) {
     return log.info(msg, op);
   }
   return log.info(msg, op);
 }
 
-function warning<T>(msg: Message<T>, op?: string): T | undefined {
+function warning<T>(msg: Message<T>, op = "main"): T | undefined {
   // Assist TS compiler with pass-through generic type
-  op = op ?? "main";
   if (msg instanceof Function) {
     return log.warning(msg, op);
   }
@@ -134,11 +132,10 @@ function warning<T>(msg: Message<T>, op?: string): T | undefined {
 
 function error<T>(
   msg: Message<T>,
-  op?: string,
+  op = "main",
   error?: Error,
 ): T | undefined {
   // Assist TS compiler with pass-through generic type
-  op = op ?? "main";
   error = error ?? undefined;
   if (msg instanceof Function) {
     return log.error(msg, op, error);
@@ -148,11 +145,10 @@ function error<T>(
 
 function critical<T>(
   msg: Message<T>,
-  op?: string,
+  op = "main",
   error?: Error,
 ): T | undefined {
   // Assist TS compiler with pass-through generic type
-  op = op ?? "main";
   error = error ?? undefined;
   if (msg instanceof Function) {
     return log.critical(msg, op, error);
