@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/github/license/denosaurs/branch)](https://github.com/denosaurs/branch/blob/master/LICENSE)
 
 ```typescript
-import log from "../mod.ts";
+import * as log from "../mod.ts";
 
 await log.setup({ filter: "INFO" });
 
