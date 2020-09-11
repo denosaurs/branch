@@ -20,3 +20,4 @@ logger2.warning("Hello World!");
 logger2.info("Hello World!");
 
 logger2.debug("Hello World!");
+// ^ this should not print
