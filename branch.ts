@@ -17,15 +17,6 @@ import {
   GenericFunction,
 } from "./deps.ts";
 
-export declare interface LogConfig {
-  /** Disables logging */
-  quiet?: boolean;
-  /** Enables debugging */
-  debug?: boolean;
-  /** Clear the console on reload events */
-  fullscreen?: boolean;
-}
-
 /** Logger tag */
 const TAG = `${bold("[denon]")}`;
 
@@ -39,9 +30,10 @@ const DEFAULT_HANDLER = "format_fn";
 export class ConsoleHandler extends BaseHandler {
   format(record: LogRecord): string {
     if (record.args.length === 0) throw new Error("Logger Error");
+
     let msg = "";
     let tag = TAG;
-    let op = record.args[0] as string;
+    let op = record.args[0] as string | undefined;
     let error: Error | undefined = undefined;
 
     switch (record.level) {
@@ -64,10 +56,13 @@ export class ConsoleHandler extends BaseHandler {
         break;
     }
 
-    let action = gray(`[${italic(op)}]`);
-
     msg += tag;
-    msg += ` ${action}`;
+
+    if (op) {
+      let action = gray(`[${italic(op)}]`);
+      msg += ` ${action}`;
+    }
+
     msg += ` ${reset(record.msg)}`;
 
     if (error) {
@@ -84,13 +79,13 @@ export class ConsoleHandler extends BaseHandler {
   }
 }
 
-interface LogOptions {
+export interface Options {
   filter: LevelName;
 }
 
 /** Modify default deno logger with configurable
  * log level. */
-export async function setup({ filter }: LogOptions): Promise<void> {
+export async function setup({ filter }: Options): Promise<void> {
   await log.setup({
     handlers: {
       [DEFAULT_HANDLER]: new ConsoleHandler(DEBUG_LEVEL),
@@ -106,7 +101,7 @@ export async function setup({ filter }: LogOptions): Promise<void> {
 
 type Message<T> = (T extends GenericFunction ? never : T) | (() => T);
 
-function debug<T>(msg: Message<T>, op = "main"): T | undefined {
+function debug<T>(msg: Message<T>, op?: string): T | undefined {
   // Assist TS compiler with pass-through generic type
   if (msg instanceof Function) {
     return log.debug(msg, op);
@@ -114,7 +109,7 @@ function debug<T>(msg: Message<T>, op = "main"): T | undefined {
   return log.debug(msg, op);
 }
 
-function info<T>(msg: Message<T>, op = "main"): T | undefined {
+function info<T>(msg: Message<T>, op?: string): T | undefined {
   // Assist TS compiler with pass-through generic type
   if (msg instanceof Function) {
     return log.info(msg, op);
@@ -122,7 +117,7 @@ function info<T>(msg: Message<T>, op = "main"): T | undefined {
   return log.info(msg, op);
 }
 
-function warning<T>(msg: Message<T>, op = "main"): T | undefined {
+function warning<T>(msg: Message<T>, op?: string): T | undefined {
   // Assist TS compiler with pass-through generic type
   if (msg instanceof Function) {
     return log.warning(msg, op);
@@ -130,11 +125,7 @@ function warning<T>(msg: Message<T>, op = "main"): T | undefined {
   return log.warning(msg, op);
 }
 
-function error<T>(
-  msg: Message<T>,
-  op = "main",
-  error?: Error,
-): T | undefined {
+function error<T>(msg: Message<T>, op?: string, error?: Error): T | undefined {
   // Assist TS compiler with pass-through generic type
   error = error ?? undefined;
   if (msg instanceof Function) {
@@ -145,7 +136,7 @@ function error<T>(
 
 function critical<T>(
   msg: Message<T>,
-  op = "main",
+  op?: string,
   error?: Error,
 ): T | undefined {
   // Assist TS compiler with pass-through generic type
@@ -156,12 +147,12 @@ function critical<T>(
   return log.critical(msg, op, error);
 }
 
-export function prefix<T>(op: string) {
+export function create<T>(prefix?: string) {
   return {
-    debug: (msg: Message<T>) => debug(msg, op),
-    info: (msg: Message<T>) => info(msg, op),
-    warning: (msg: Message<T>) => warning(msg, op),
-    error: (msg: Message<T>, err?: Error) => error(msg, op, err),
-    critical: (msg: Message<T>, err?: Error) => critical(msg, op, err),
+    debug: (msg: Message<T>) => debug(msg, prefix),
+    info: (msg: Message<T>) => info(msg, prefix),
+    warning: (msg: Message<T>) => warning(msg, prefix),
+    error: (msg: Message<T>, err?: Error) => error(msg, prefix, err),
+    critical: (msg: Message<T>, err?: Error) => critical(msg, prefix, err),
   };
 }
