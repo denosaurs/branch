@@ -1,18 +1,22 @@
 // Copyright 2020-present the denosaurs team. All rights reserved. MIT license.
 
-// provide better logging, see src/log.ts
-export * as log from "https://deno.land/std@0.68.0/log/mod.ts";
-export {
+export * as log from "https://deno.land/std@0.69.0/log/mod.ts";
+
+export type {
   LogRecord,
   GenericFunction,
-} from "https://deno.land/std@0.68.0/log/logger.ts";
+} from "https://deno.land/std@0.69.0/log/logger.ts";
+
+export type {
+  LevelName,
+} from "https://deno.land/std@0.69.0/log/levels.ts";
+
 export {
   LogLevels,
-  LevelName,
-} from "https://deno.land/std@0.68.0/log/levels.ts";
-export { BaseHandler } from "https://deno.land/std@0.68.0/log/handlers.ts";
+} from "https://deno.land/std@0.69.0/log/levels.ts";
 
-// colors for a pretty cli
+export { BaseHandler } from "https://deno.land/std@0.69.0/log/handlers.ts";
+
 export {
   setColorEnabled,
   reset,
@@ -23,4 +27,4 @@ export {
   gray,
   green,
   italic,
-} from "https://deno.land/std@0.68.0/fmt/colors.ts";
+} from "https://deno.land/std@0.69.0/fmt/colors.ts";
