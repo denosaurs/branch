@@ -1,20 +1,20 @@
 // Copyright 2020-present the denosaurs team. All rights reserved. MIT license.
 
 import {
-  log,
-  reset,
-  bold,
-  blue,
-  yellow,
-  green,
-  red,
-  gray,
-  italic,
-  LogRecord,
-  LogLevels,
   BaseHandler,
-  LevelName,
+  blue,
+  bold,
   GenericFunction,
+  gray,
+  green,
+  italic,
+  LevelName,
+  log,
+  LogLevels,
+  LogRecord,
+  red,
+  reset,
+  yellow,
 } from "./deps.ts";
 
 /** Logger tag */
@@ -30,10 +30,10 @@ const DEFAULT_HANDLER = "format_fn";
 export class ConsoleHandler extends BaseHandler {
   format(record: LogRecord): string {
     if (record.args.length === 0) throw new Error("Logger Error");
-
+    
     let msg = "";
     let tag = TAG;
-    let op = record.args[0] as string | undefined;
+    const op = record.args[0] as string | undefined;
     let error: Error | undefined = undefined;
 
     switch (record.level) {
@@ -59,7 +59,7 @@ export class ConsoleHandler extends BaseHandler {
     msg += tag;
 
     if (op) {
-      let action = gray(`[${italic(op)}]`);
+      const action = gray(`[${italic(op)}]`);
       msg += ` ${action}`;
     }
 

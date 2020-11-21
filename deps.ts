@@ -3,28 +3,24 @@
 export * as log from "https://deno.land/std@0.78.0/log/mod.ts";
 
 export type {
-  LogRecord,
   GenericFunction,
+  LogRecord,
 } from "https://deno.land/std@0.78.0/log/logger.ts";
 
-export type {
-  LevelName,
-} from "https://deno.land/std@0.78.0/log/levels.ts";
+export type { LevelName } from "https://deno.land/std@0.78.0/log/levels.ts";
 
-export {
-  LogLevels,
-} from "https://deno.land/std@0.78.0/log/levels.ts";
+export { LogLevels } from "https://deno.land/std@0.78.0/log/levels.ts";
 
 export { BaseHandler } from "https://deno.land/std@0.78.0/log/handlers.ts";
 
 export {
-  setColorEnabled,
-  reset,
-  bold,
   blue,
-  yellow,
-  red,
+  bold,
   gray,
   green,
   italic,
+  red,
+  reset,
+  setColorEnabled,
+  yellow,
 } from "https://deno.land/std@0.78.0/fmt/colors.ts";
