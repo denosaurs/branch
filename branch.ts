@@ -30,7 +30,7 @@ const DEFAULT_HANDLER = "format_fn";
 export class ConsoleHandler extends BaseHandler {
   format(record: LogRecord): string {
     if (record.args.length === 0) throw new Error("Logger Error");
-    
+
     let msg = "";
     let tag = TAG;
     const op = record.args[0] as string | undefined;
