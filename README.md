@@ -10,7 +10,7 @@ import * as log from "https://deno.land/x/branch/mod.ts";
 
 await log.setup({ filter: "INFO" });
 
-const logger = log.prefix("hello");
+const logger = log.create("hello");
 
 logger.critical("Hello World!");
 logger.error("Hello World!");
